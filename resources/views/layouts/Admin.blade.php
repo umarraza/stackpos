@@ -20,6 +20,8 @@
   <link rel="stylesheet" href="{{asset('./Admin/dist/css/./AdminLTE.min.css')}}">
   <link rel="stylesheet" href="{{asset('./Admin/dist/css/skins/skin-blue.min.css')}}">
   <link rel="stylesheet"href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+  <script src="https://unpkg.com/ionicons@4.5.5/dist/ionicons.js"></script>
+
 </head>
 <!--
 BODY TAG OPTIONS:
@@ -133,6 +135,8 @@ desired effect
 
          @if (Auth::User()->role=="Admin")
         <li><a href="{{ url('show-employes') }}"><i class="fa fa-users"></i> <span>All Employes</span></a></li>
+        <li><a href="{{ url('cuurent-day-report') }}"><i class="fa fa-users"></i> <span>Daily Finencial Statement</span></a></li>
+
         @endif
       </ul>
     </section>

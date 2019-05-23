@@ -99,3 +99,7 @@ Route::get('/show-products'			, 'ProductController@showProducts');				// Show Pr
 Route::get('/product-delete/{id}'	, 'ProductController@productDelete')->middleware('employee');		// Delete Product
 Route::post('/new-product-store'	, 'ProductController@newProductStore')->middleware('employee');		// Store Product
 Route::post('/product-update'		, 'ProductController@productUpdate')->middleware('employee');			// Update Product
+
+
+// Day Book Routes
+Route::get('/cuurent-day-report'	, 'DayBookController@dailyAccountsReport')->middleware('employee');
