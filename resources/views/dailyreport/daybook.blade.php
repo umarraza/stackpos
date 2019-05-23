@@ -34,7 +34,7 @@
                         @if (isset($now))
                         <p>Todays Purchases</p>
                         @else
-                        <p>Sales for the date &nbsp; <span class="label label-default">{{$dateMonthYear}}</span></p>
+                        <p>Purchases for the date &nbsp; <span class="label label-default">{{$dateMonthYear}}</span></p>
                         @endif
                         <p></p>
                     </div>
@@ -54,7 +54,7 @@
                         @if (isset($now))
                         <p>Todays Expenses</p>
                         @else
-                        <p>Purchases for the date &nbsp; <span class="label label-default">{{$dateMonthYear}}</span></p>
+                        <p>Expenses for the date &nbsp; <span class="label label-default">{{$dateMonthYear}}</span></p>
                         @endif
                         <p></p>
                     </div>
