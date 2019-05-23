@@ -102,4 +102,6 @@ Route::post('/product-update'		, 'ProductController@productUpdate')->middleware(
 
 
 // Day Book Routes
-Route::get('/cuurent-day-report'	, 'DayBookController@dailyAccountsReport')->middleware('employee');
+Route::get('/cuurent-day-report' , 'DayBookController@dailyAccountsReport')->middleware('employee');
+Route::post('/other-day-report'	, 'DayBookController@otherDayReport')->middleware('employee');
+

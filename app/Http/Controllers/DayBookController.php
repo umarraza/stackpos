@@ -6,26 +6,24 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 use App\Brand;
-use App\Product;            // products
+use App\Product;           
 use App\Supplier; 
-use App\Purchase;           // Purchases
+use App\Purchase;           
 use App\SupplierPayment;
 use App\ProductInventory;
-use App\FixedExpense;       // Expenses
+use App\FixedExpense;       
 use Carbon\Carbon;
-use App\Sale;               // Sales
-use App\ProductSale;        // Products Sales
-
+use App\Sale;               
+use App\ProductSale;      
+use DateTime;
 
 class DayBookController extends Controller
 {
     public function dailyAccountsReport() {
        
-        // $currentDaySales = Sale::all();
-
         $now = Carbon::now()->format('y-m-d');
 
-        $currentDaySales = DB::table('sales AS sale')
+        $dailySales = DB::table('sales AS sale')
 
         ->join('products_sale AS product', 'product.saleId', '=', 'sale.id')
         
@@ -33,23 +31,28 @@ class DayBookController extends Controller
             
             'sale.id', 
             'sale.totalBill',
-            'amountRemaining',
+            'sale.amountRemaining',
             'product.name',
             'sale.created_at'
+
             )
 
         ->whereDate('sale.created_at', $now)->get();
-        
-        $salesTotal = 0;
 
-        foreach ($currentDaySales as $value) {
+        $salesTotal = 0;
+        $totalSalesBalance = 0;
+
+        foreach ($dailySales as $value) {
 
             $salesAmount = $value->totalBill;
+            $balanceAmount = $value->amountRemaining;
+
             $salesTotal += $salesAmount;
+            $totalSalesBalance += $balanceAmount;
 
         }
 
-        $currentDayPurchases = DB::table('purchases AS purchase')
+        $dailyPurchases = DB::table('purchases AS purchase')
 
         ->join('products AS product', 'product.purchaseId', '=', 'purchase.id')
 
@@ -57,7 +60,7 @@ class DayBookController extends Controller
 
             'purchase.id', 
             'purchase.totalBill',
-            'amountRemaining',
+            'purchase.amountRemaining',
             'product.name',
             'purchase.created_at'
 
@@ -66,25 +69,130 @@ class DayBookController extends Controller
             ->whereDate('purchase.created_at', $now)->get();
 
             $purchsesTotal = 0;
+            $totalPurchaseBalance = 0;
 
-            foreach ($currentDayPurchases as $value) {
+            foreach ($dailyPurchases as $value) {
                 
                 $purchaseAmount = $value->totalBill;
+                $balanceAmount = $value->amountRemaining;
+
                 $purchsesTotal += $purchaseAmount;
+                $totalPurchaseBalance += $balanceAmount;
             }
     
-            $currentDayExpenses  = FixedExpense::whereDate('created_at', $now)->get();
+            $dailyExpenses  = FixedExpense::whereDate('created_at', $now)->get();
 
             $expensesTotal = 0;
     
-            foreach ($currentDayExpenses as $value) {
+            foreach ($dailyExpenses as $value) {
     
                 $expensesAmount = $value->amount;
                 $expensesTotal += $expensesAmount;
     
             }
 
-        return view('dailyreport.daybook', compact('currentDaySales','currentDayPurchases', 'currentDayExpenses','purchsesTotal', 'salesTotal', 'expensesTotal','now'));
+        return view('dailyreport.daybook', compact(
+            
+            'dailySales',
+            'dailyPurchases',
+            'dailyExpenses', 
+            'totalSalesBalance', 
+            'totalPurchaseBalance', 
+            'purchsesTotal', 
+            'salesTotal', 
+            'expensesTotal',
+            'now'
+        ));
+
+    }
+
+    public function otherDayReport(Request $request) {
+        
+        $datePicker     =  $request->datepicker;
+        $oldDate        =  date("y-m-d", strtotime($datePicker));
+        $dateMonthYear  =  date("d-m-y", strtotime($datePicker));
+
+        $dailySales = DB::table('sales AS sale')
+
+        ->join('products_sale AS product', 'product.saleId', '=', 'sale.id')
+        
+        ->select(
+            
+            'sale.id', 
+            'sale.totalBill',
+            'sale.amountRemaining',
+            'product.name',
+            'sale.created_at'
+            )
+
+        ->whereDate('sale.created_at', $oldDate)->get();
+        
+        $salesTotal = 0;
+        $totalSalesBalance = 0;
+
+        foreach ($dailySales as $value) {
+
+            $salesAmount = $value->totalBill;
+            $balanceAmount = $value->amountRemaining;
+
+            $salesTotal += $salesAmount;
+            $totalSalesBalance += $balanceAmount;
+
+        }
+
+        $dailyPurchases = DB::table('purchases AS purchase')
+
+        ->join('products AS product', 'product.purchaseId', '=', 'purchase.id')
+
+        ->select(
+
+            'purchase.id', 
+            'purchase.totalBill',
+            'purchase.amountRemaining',
+            'product.name',
+            'purchase.created_at'
+
+            )
+
+            ->whereDate('purchase.created_at', $oldDate)->get();
+
+            $purchsesTotal = 0;
+            $totalPurchaseBalance = 0;
+
+            foreach ($dailyPurchases as $value) {
+                
+                $purchaseAmount = $value->totalBill;
+                $balanceAmount = $value->amountRemaining;
+
+                $purchsesTotal += $purchaseAmount;
+                $totalPurchaseBalance += $balanceAmount;
+
+            }
+    
+            $dailyExpenses  = FixedExpense::whereDate('created_at', $oldDate)->get();
+
+            $expensesTotal = 0;
+    
+            foreach ($dailyExpenses as $value) {
+    
+                $expensesAmount = $value->amount;
+                $expensesTotal += $expensesAmount;
+    
+            }
+
+        return view('dailyreport.daybook', compact(
+            
+            'dailySales',
+            'dailyPurchases', 
+            'dailyExpenses', 
+            'totalSalesBalance',
+            'totalPurchaseBalance',
+            'purchsesTotal', 
+            'salesTotal', 
+            'expensesTotal',
+            'dateMonthYear'
+        
+        ));
 
     }
 }

@@ -19,6 +19,11 @@
   <link rel="stylesheet" href="{{asset('./Admin/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css')}}">
   <link rel="stylesheet" href="{{asset('./Admin/dist/css/./AdminLTE.min.css')}}">
   <link rel="stylesheet" href="{{asset('./Admin/dist/css/skins/skin-blue.min.css')}}">
+  <link rel="stylesheet" href="{{asset('./Admin/plugins/iCheck/all.css')}}">
+  <link rel="stylesheet" href="{{asset('./Admin/bower_components/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css')}}">
+  <link rel="stylesheet" href="{{asset('./Admin/plugins/timepicker/bootstrap-timepicker.min.css')}}">
+  <link rel="stylesheet" href="{{asset('./Admin/bower_components/select2/dist/css/select2.min.css')}}">
+
   <link rel="stylesheet"href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
   <script src="https://unpkg.com/ionicons@4.5.5/dist/ionicons.js"></script>
 
@@ -104,40 +109,22 @@ desired effect
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">HEADER</li>
         @if (Auth::User()->role=="Admin")
-            <li><a href="{{ url('home') }}"><i class="fa fa-user"></i> <span>Home</span></a></li>                 
-        @endif
+        
+            <li><a href="{{ url('home') }}"><i class="fa fa-user"></i> <span>Home</span></a></li>   
+            <li><a href="{{ url('cuurent-day-report') }}"><i class="fa fa-users"></i> <span>Daily Finencial Statement</span></a></li>
+            <li><a href="{{ url('show-suppliers') }}"><i class="fa fa-user"></i> <span>Suppliers</span></a></li> 
+            <li><a href="{{url('total-bussiness')}}"><i class="fa fa-money"></i> <span>Total Bussiness</span></a></li>
+            <li><a href="{{url('new-purchase-form')}}"><i class="fa fa-male"></i> <span>Purchase</span></a></li>
+            <li><a href="{{url('show-fixed-expenses')}}"><i class="fa fa-file"></i> <span>Fixed Expenses</span></a></li>
+            <li><a href="{{ url('new-employee') }}"><i class="fa fa-users"></i> <span>Add Employee</span></a></li>
+            <li><a href="{{ url('show-employes') }}"><i class="fa fa-users"></i> <span>All Employes</span></a></li>
 
-        @if (Auth::User()->role=="Admin")
-            <li><a href="{{ url('show-suppliers') }}"><i class="fa fa-user"></i> <span>Suppliers</span></a></li>                 
         @endif
 
         <li><a href="{{ url('show-customers') }}"><i class="fa fa-users"></i> <span>Customers</span></a></li>
-
-        @if (Auth::User()->role=="Admin")
-            <li><a href="{{url('total-bussiness')}}"><i class="fa fa-money"></i> <span>Total Bussiness</span></a></li>
-        @endif
-
         <li><a href="{{url('show-products')}}"><i class="fa fa-product-hunt"></i> <span>Products</span></a></li>
-  
         <li><a href="{{url('new-sales-form')}}"><i class="fa fa-male"></i> <span>Sale</span></a></li>
-        
-        @if (Auth::User()->role=="Admin")
-            <li><a href="{{url('new-purchase-form')}}"><i class="fa fa-male"></i> <span>Purchase</span></a></li>
-        @endif
-
-         @if (Auth::User()->role=="Admin")
-            <li><a href="{{url('show-fixed-expenses')}}"><i class="fa fa-file"></i> <span>Fixed Expenses</span></a></li>
-        @endif
-
-         @if (Auth::User()->role=="Admin")
-            <li><a href="{{ url('new-employee') }}"><i class="fa fa-users"></i> <span>Add Employee</span></a></li>
-        @endif
-
-         @if (Auth::User()->role=="Admin")
-        <li><a href="{{ url('show-employes') }}"><i class="fa fa-users"></i> <span>All Employes</span></a></li>
-        <li><a href="{{ url('cuurent-day-report') }}"><i class="fa fa-users"></i> <span>Daily Finencial Statement</span></a></li>
-
-        @endif
+         
       </ul>
     </section>
   </aside>
@@ -225,17 +212,95 @@ desired effect
 <script src="{{asset('./Admin/bower_components/jquery/dist/jquery.min.js')}}"></script>
 <script src="{{asset('./Admin/bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
 <script src="{{asset('./Admin/bower_components/chart.js/Chart.js')}}"></script>
-<script src="{{ asset('./Admin/bower_components/fastclick/lib/fastclick.js') }}"></script>
+<script src="{{asset('./Admin/bower_components/fastclick/lib/fastclick.js') }}"></script>
 <script src="{{asset('./Admin/dist/js/adminlte.min.js')}}"></script>
-<script src="{{ asset('./Admin/bower_components/datatables.net/js/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset('./Admin/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') }}"></script>
-<script src="{{ asset('./Admin/bower_components/jquery-slimscroll/jquery.slimscroll.min.js') }}"></script>
-<script src="{{ asset('./Admin/bower_components/fastclick/lib/fastclick.js') }}"></script>
-<script src="{{ url('js/JsBarcode.all.min.js') }}"></script>
+<script src="{{asset('./Admin/bower_components/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+<script src="{{asset('./Admin/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') }}"></script>
+<script src="{{asset('./Admin/bower_components/jquery-slimscroll/jquery.slimscroll.min.js') }}"></script>
+<script src="{{asset('./Admin/bower_components/fastclick/lib/fastclick.js') }}"></script>
+<script src="{{asset('./Admin/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
+<script src="{{asset('./Admin/plugins/input-mask/jquery.inputmask.js')}}"></script>
+<script src="{{asset('./Admin/plugins/input-mask/jquery.inputmask.date.extensions.js')}}"></script>
+<script src="{{asset('./Admin/plugins/input-mask/jquery.inputmask.extensions.js')}}"></script>
+<script src="{{asset('./Admin/plugins/iCheck/icheck.min.js')}}"></script>
+<script src="{{asset('./Admin/bower_components/bootstrap-daterangepicker/daterangepicker.js')}}"></script>
+<script src="{{asset('./Admin/bower_components/moment/min/moment.min.js')}}"></script>
+<script src="{{asset('js/JsBarcode.all.min.js') }}"></script>
+<script src="{{asset('./Admin/bower_components/select2/dist/js/select2.full.min.js') }}"></script>
+<script src="{{asset('./Admin/bower_components/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js') }}"></script>
+<script src="{{asset('./Admin/plugins/timepicker/bootstrap-timepicker.min.js') }}"></script>
 
 <script>
-    var focusStatus = true;
+  
+  // ============================================================================================================================ //
+  var focusStatus = true;
   $(function () {
+
+  $('.select2').select2()
+
+    //Datemask dd/mm/yyyy
+    $('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
+    //Datemask2 mm/dd/yyyy
+    $('#datemask2').inputmask('mm/dd/yyyy', { 'placeholder': 'mm/dd/yyyy' })
+    //Money Euro
+    $('[data-mask]').inputmask()
+
+    //Date range picker
+    $('#reservation').daterangepicker()
+    //Date range picker with time picker
+    $('#reservationtime').daterangepicker({ timePicker: true, timePickerIncrement: 30, format: 'MM/DD/YYYY h:mm A' })
+    //Date range as a button
+    $('#daterange-btn').daterangepicker(
+      {
+        ranges   : {
+          'Today'       : [moment(), moment()],
+          'Yesterday'   : [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+          'Last 7 Days' : [moment().subtract(6, 'days'), moment()],
+          'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+          'This Month'  : [moment().startOf('month'), moment().endOf('month')],
+          'Last Month'  : [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        },
+        startDate: moment().subtract(29, 'days'),
+        endDate  : moment()
+      },
+      function (start, end) {
+        $('#daterange-btn span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'))
+      }
+    )
+
+    //Date picker
+    $('#datepicker').datepicker({
+      autoclose: true
+    })
+
+    //iCheck for checkbox and radio inputs
+    $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+      checkboxClass: 'icheckbox_minimal-blue',
+      radioClass   : 'iradio_minimal-blue'
+    })
+    //Red color scheme for iCheck
+    $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
+      checkboxClass: 'icheckbox_minimal-red',
+      radioClass   : 'iradio_minimal-red'
+    })
+    //Flat red color scheme for iCheck
+    $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+      checkboxClass: 'icheckbox_flat-green',
+      radioClass   : 'iradio_flat-green'
+    })
+
+    //Colorpicker
+    $('.my-colorpicker1').colorpicker()
+    //color picker with addon
+    $('.my-colorpicker2').colorpicker()
+
+    //Timepicker
+    $('.timepicker').timepicker({
+      showInputs: false
+    })
+
+
+ // ==============================================================================//
     $("#insert-more").click(function () {
           $("#mytable").each(function () {
               var tds = '<tr>';
@@ -264,7 +329,9 @@ desired effect
     });
     $('#example1').DataTable();
     $('#paymentHistory').DataTable();
-    
+    $('#dbookSales').DataTable();
+    $('#dbookPurchase').DataTable();
+    $('#dbookExpenses').DataTable();
     // $('#example2').DataTable({
     //   'paging'      : true,
     //   'lengthChange': false,
