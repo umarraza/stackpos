@@ -103,7 +103,7 @@ class DayBookController extends Controller
             $purchsesTotal = number_format($purchsesTotal);
             $totalPurchaseBalance = number_format($totalPurchaseBalance);
 
-            $dailyExpenses  = FixedExpense::whereDate('created_at', $now)->get();
+            $dailyExpenses = FixedExpense::whereDate('created_at', $now)->get();
 
             $expensesTotal = 0;
     
