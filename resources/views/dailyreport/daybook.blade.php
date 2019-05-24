@@ -102,10 +102,10 @@
                                 <div class="input-group-addon">
                                     <i class="fa fa-calendar"></i>
                                 </div>
-                                <input type="text" name="datepicker" class="form-control pull-right" id="datepicker" placeholder="Select Date">
+                                <input type="text" name="datepicker" class="form-control pull-right" id="datepicker" autocomplete="off" placeholder="Select Date">
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-info pull-left">Check Statement</button>
+                        <button  type="submit" class="btn btn-bitbucket pull-left"><i class="fas fa-info-circle">&nbsp;&nbsp;</i>Check Statement</button>
                     </div>
                 </form>
             </div>
@@ -116,7 +116,7 @@
         {{-- ================= Sales Records ================= --}}
 
         <div class="row">
-            <div class="col-xs-12">
+            <div class="col-12">
                 <div class="box box-info">
                     <div class="box-header">
                         <h3 class="box-title">Sales</h3>
@@ -128,25 +128,31 @@
                         <thead>
                             <tr>
                                 <th>Sr#</th>
-                                <th>Date</th>
+                                <th>Customer Name</th>
                                 <th>Product Name</th>
                                 <th>Amount</th>
                                 <th>Balance</th>
+                                <th>Date</th>
                             </tr>
                         </thead>
                         <tbody>
                             @php $count=1; @endphp
                             @foreach($dailySales as $sale)
                             <tr>
-                                <td><span class="label label-primary">{{ $count }}</span></td>
+                                <td><span class="label btn-github">{{ $count }}</span></td>
+                                @if($sale->customer_name !== NULL)
+                                <td><a style="width: 120px" href="{{url('/view-customer-detail/'.$sale->customerId)}}" type="button" class="btn btn-xs btn-github">{{ $sale->customer_name }}</td>
+                                @else
+                                <td><a style="width: 120px" href="{{url('#')}}" type="button" class="btn btn-xs btn-github disabled">Walk-In</td>
+                                @endif
+                                <td>{{ $sale->name }}</td>
+                                <td>{{ $sale->totalBill }}</td>
+                                <td>{{ $sale->amountRemaining }}</td>
                                 @if (isset($now))
                                 <td>{{ $now }}</td>
                                 @else
                                 <td>{{ $dateMonthYear }}</td>
                                 @endif
-                                <td>{{ $sale->name }}</td>
-                                <td>{{ $sale->totalBill }}</td>
-                                <td>{{ $sale->amountRemaining }}</td>
                             </tr>
                             @php $count++; @endphp
                             @endforeach
@@ -173,25 +179,27 @@
                             <thead>
                                 <tr>
                                     <th>Sr#</th>
-                                    <th>Date</th>
+                                    <th>Supplier Name</th>
                                     <th>Product Name</th>
                                     <th>Amount</th>
                                     <th>Balance</th>
+                                    <th>Date</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @php $count=1; @endphp
                                 @foreach($dailyPurchases as $purchase)
                                     <tr>
-                                        <td><span class="label label-primary">{{ $count }}</span></td>
+                                        <td><span class="label btn-github">{{ $count }}</span></td>
+                                        <td><a style="width: 120px" href="{{url('/view-supplier-detail/'.$purchase->supplierId)}}" type="button" class="btn btn-xs btn-github">{{ $purchase->supplier_name }}</td>
+                                        <td>{{ $purchase->name }}</td>
+                                        <td>{{ $purchase->totalBill }}</td>
+                                        <td>{{ $purchase->amountRemaining }}</td>
                                         @if (isset($now))
                                         <td>{{ $now }}</td>
                                         @else
                                         <td>{{ $dateMonthYear }}</td>
                                         @endif
-                                        <td>{{ $purchase->name }}</td>
-                                        <td>{{ $purchase->totalBill }}</td>
-                                        <td>{{ $purchase->amountRemaining }}</td>
                                     </tr>
                                 @php $count++; @endphp
                                 @endforeach
@@ -219,23 +227,23 @@
                             <thead>
                                 <tr>
                                     <th>Sr#</th>
-                                    <th>Date</th>
                                     <th>Expence Name</th>
                                     <th>Amount</th>
+                                    <th>Date</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @php $count=1; @endphp
                                 @foreach($dailyExpenses as $expense)
                                     <tr>
-                                        <td><span class="label label-primary">{{ $count }}</span></td>
+                                        <td><span class="label btn-github">{{ $count }}</span></td>
+                                        <td>{{ $expense->expenseName }}</td>
+                                        <td>{{ $expense->amount }}</td>
                                         @if (isset($now))
                                         <td>{{ $now }}</td>
                                         @else
                                         <td>{{ $dateMonthYear }}</td>
                                         @endif
-                                        <td>{{ $expense->expenseName }}</td>
-                                        <td>{{ $expense->amount }}</td>
                                     </tr>
                                 @php $count++; @endphp
                                 @endforeach

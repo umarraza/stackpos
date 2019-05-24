@@ -26,41 +26,57 @@ class DayBookController extends Controller
         $dailySales = DB::table('sales AS sale')
 
         ->join('products_sale AS product', 'product.saleId', '=', 'sale.id')
+        ->join('customers AS customer', 'sale.customerId', '=', 'customer.id')
         
         ->select(
             
             'sale.id', 
+            'sale.customerId', 
             'sale.totalBill',
             'sale.amountRemaining',
+            'customer.name AS customer_name',
             'product.name',
             'sale.created_at'
 
             )
 
-        ->whereDate('sale.created_at', $now)->get();
+        ->whereDate('sale.created_at', $now)
+        ->get();
 
         $salesTotal = 0;
         $totalSalesBalance = 0;
 
         foreach ($dailySales as $value) {
 
+            
             $salesAmount = $value->totalBill;
             $balanceAmount = $value->amountRemaining;
 
             $salesTotal += $salesAmount;
             $totalSalesBalance += $balanceAmount;
 
+            // Converts the number to comma seprated thousands format e.g 270000 => 270,000
+
+            $value->totalBill = number_format($value->totalBill);
+            $value->amountRemaining = number_format($value->amountRemaining);
+
         }
+        
+        $salesTotal = number_format($salesTotal);
+        $totalSalesBalance = number_format($totalSalesBalance);
 
         $dailyPurchases = DB::table('purchases AS purchase')
 
         ->join('products AS product', 'product.purchaseId', '=', 'purchase.id')
+        ->join('suppliers AS supplier', 'purchase.supplierId', '=', 'supplier.id')
 
         ->select(
 
             'purchase.id', 
+            'purchase.supplierId', 
             'purchase.totalBill',
             'purchase.amountRemaining',
+            'supplier.name AS supplier_name',
             'product.name',
             'purchase.created_at'
 
@@ -78,8 +94,15 @@ class DayBookController extends Controller
 
                 $purchsesTotal += $purchaseAmount;
                 $totalPurchaseBalance += $balanceAmount;
+
+                $value->totalBill = number_format($value->totalBill);
+                $value->amountRemaining = number_format($value->amountRemaining);
+
             }
     
+            $purchsesTotal = number_format($purchsesTotal);
+            $totalPurchaseBalance = number_format($totalPurchaseBalance);
+
             $dailyExpenses  = FixedExpense::whereDate('created_at', $now)->get();
 
             $expensesTotal = 0;
@@ -91,42 +114,49 @@ class DayBookController extends Controller
     
             }
 
-        return view('dailyreport.daybook', compact(
-            
-            'dailySales',
-            'dailyPurchases',
-            'dailyExpenses', 
-            'totalSalesBalance', 
-            'totalPurchaseBalance', 
-            'purchsesTotal', 
-            'salesTotal', 
-            'expensesTotal',
-            'now'
-        ));
+            $expensesTotal = number_format($expensesTotal);
+
+            return view('dailyreport.daybook', compact(
+                
+                'dailySales',
+                'dailyPurchases',
+                'dailyExpenses', 
+                'totalSalesBalance', 
+                'totalPurchaseBalance', 
+                'purchsesTotal', 
+                'salesTotal', 
+                'expensesTotal',
+                'now'
+            ));
 
     }
 
     public function otherDayReport(Request $request) {
         
         $datePicker     =  $request->datepicker;
+
         $oldDate        =  date("y-m-d", strtotime($datePicker));
         $dateMonthYear  =  date("d-m-y", strtotime($datePicker));
 
         $dailySales = DB::table('sales AS sale')
 
         ->join('products_sale AS product', 'product.saleId', '=', 'sale.id')
+        ->join('customers AS customer', 'sale.customerId', '=', 'customer.id')
         
         ->select(
-            
+
             'sale.id', 
+            'sale.customerId', 
             'sale.totalBill',
             'sale.amountRemaining',
+            'customer.name AS customer_name',
             'product.name',
             'sale.created_at'
+
             )
 
         ->whereDate('sale.created_at', $oldDate)->get();
-        
+
         $salesTotal = 0;
         $totalSalesBalance = 0;
 
@@ -138,17 +168,26 @@ class DayBookController extends Controller
             $salesTotal += $salesAmount;
             $totalSalesBalance += $balanceAmount;
 
+            $value->totalBill = number_format($value->totalBill);
+            $value->amountRemaining = number_format($value->amountRemaining);
+
         }
+
+        $salesTotal = number_format($salesTotal);
+        $totalSalesBalance = number_format($totalSalesBalance);
 
         $dailyPurchases = DB::table('purchases AS purchase')
 
         ->join('products AS product', 'product.purchaseId', '=', 'purchase.id')
+        ->join('suppliers AS supplier', 'purchase.supplierId', '=', 'supplier.id')
 
         ->select(
 
             'purchase.id', 
+            'purchase.supplierId', 
             'purchase.totalBill',
             'purchase.amountRemaining',
+            'supplier.name AS supplier_name',
             'product.name',
             'purchase.created_at'
 
@@ -167,8 +206,14 @@ class DayBookController extends Controller
                 $purchsesTotal += $purchaseAmount;
                 $totalPurchaseBalance += $balanceAmount;
 
+                $value->totalBill = number_format($value->totalBill);
+                $value->amountRemaining = number_format($value->amountRemaining);
+
             }
     
+            $purchsesTotal = number_format($purchsesTotal);
+            $totalPurchaseBalance = number_format($totalPurchaseBalance);
+
             $dailyExpenses  = FixedExpense::whereDate('created_at', $oldDate)->get();
 
             $expensesTotal = 0;
@@ -177,22 +222,24 @@ class DayBookController extends Controller
     
                 $expensesAmount = $value->amount;
                 $expensesTotal += $expensesAmount;
-    
+
+                $value->amount = number_format($value->amount);
             }
 
-        return view('dailyreport.daybook', compact(
-            
-            'dailySales',
-            'dailyPurchases', 
-            'dailyExpenses', 
-            'totalSalesBalance',
-            'totalPurchaseBalance',
-            'purchsesTotal', 
-            'salesTotal', 
-            'expensesTotal',
-            'dateMonthYear'
-        
-        ));
+            $expensesTotal = number_format($expensesTotal);
 
+            return view('dailyreport.daybook', compact(
+                
+                'dailySales',
+                'dailyPurchases', 
+                'dailyExpenses', 
+                'totalSalesBalance',
+                'totalPurchaseBalance',
+                'purchsesTotal', 
+                'salesTotal', 
+                'expensesTotal',
+                'dateMonthYear'
+            
+            ));
     }
 }

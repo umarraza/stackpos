@@ -69,17 +69,22 @@
 
             <div class="form-group">
                 <label for="supplierAddress" class="col-sm-2 control-label">Address:</label>
-
                 <div class="col-sm-8">
                     <input type="text" class="form-control" id="supplierAddress" name="supplierAddress" placeholder="" required="true">
                 </div>
             </div>
 
+            {{--  <div class="form-group">
+                <label for="phoneNumber" class="col-sm-2 control-label">Phone Number:</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="" required="true">
+                </div>
+            </div>  --}}
+
             <div class="form-group">
                 <label for="accountNumber" class="col-sm-2 control-label">Account Number:</label>
-
                 <div class="col-sm-8">
-                    <input type="text" class="form-control" id="accountNumber" name="accountNumber" placeholder="" required="true">
+                    <input type="text" class="form-control" id="accountNumber" name="accountNumber" placeholder="">
                 </div>
             </div>
             

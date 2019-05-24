@@ -23,6 +23,8 @@
   <link rel="stylesheet" href="{{asset('./Admin/bower_components/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css')}}">
   <link rel="stylesheet" href="{{asset('./Admin/plugins/timepicker/bootstrap-timepicker.min.css')}}">
   <link rel="stylesheet" href="{{asset('./Admin/bower_components/select2/dist/css/select2.min.css')}}">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+
 
   <link rel="stylesheet"href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
   <script src="https://unpkg.com/ionicons@4.5.5/dist/ionicons.js"></script>
@@ -108,22 +110,22 @@ desired effect
       </div>
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">HEADER</li>
+
         @if (Auth::User()->role=="Admin")
         
             <li><a href="{{ url('home') }}"><i class="fa fa-user"></i> <span>Home</span></a></li>   
             <li><a href="{{ url('cuurent-day-report') }}"><i class="fa fa-users"></i> <span>Daily Finencial Statement</span></a></li>
             <li><a href="{{ url('show-suppliers') }}"><i class="fa fa-user"></i> <span>Suppliers</span></a></li> 
             <li><a href="{{url('total-bussiness')}}"><i class="fa fa-money"></i> <span>Total Bussiness</span></a></li>
-            <li><a href="{{url('new-purchase-form')}}"><i class="fa fa-male"></i> <span>Purchase</span></a></li>
             <li><a href="{{url('show-fixed-expenses')}}"><i class="fa fa-file"></i> <span>Fixed Expenses</span></a></li>
             <li><a href="{{ url('new-employee') }}"><i class="fa fa-users"></i> <span>Add Employee</span></a></li>
             <li><a href="{{ url('show-employes') }}"><i class="fa fa-users"></i> <span>All Employes</span></a></li>
+            <li><a href="{{url('new-purchase-form')}}"><i class="fa fa-male"></i> <span>Purchase</span></a></li>
 
         @endif
-
+        <li><a href="{{url('new-sales-form')}}"><i class="fa fa-male"></i> <span>Sale</span></a></li>
         <li><a href="{{ url('show-customers') }}"><i class="fa fa-users"></i> <span>Customers</span></a></li>
         <li><a href="{{url('show-products')}}"><i class="fa fa-product-hunt"></i> <span>Products</span></a></li>
-        <li><a href="{{url('new-sales-form')}}"><i class="fa fa-male"></i> <span>Sale</span></a></li>
          
       </ul>
     </section>
